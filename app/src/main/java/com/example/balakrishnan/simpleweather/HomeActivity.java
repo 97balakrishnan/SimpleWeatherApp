@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -71,12 +72,21 @@ public class HomeActivity extends AppCompatActivity {
         String url = "http://api.wunderground.com/api/8a655346344b1471/conditions/q/"+currentLatitude+","+currentLongitude+".json";
         System.out.println(url);
         String jsonStr = sh.makeServiceCall(url);
-
+        String fURL=url.replace("conditions","forecast");
+        String fJSONStr=sh.makeServiceCall(fURL);
 
         if (jsonStr != null) {
             try {
                 JSONObject jsonObj = new JSONObject(jsonStr);
-
+                JSONObject fJSONObject = new JSONObject(fJSONStr);
+                JSONObject forecast = (JSONObject)fJSONObject.get("forecast");
+                JSONObject SimpleForecast = (JSONObject)forecast.get("simpleforecast");
+                JSONArray ForecastDay =(JSONArray)SimpleForecast.get("forecastday");
+                for(int i=0;i<ForecastDay.length();i++)
+                {
+                    JSONObject j = (JSONObject)ForecastDay.get(i);
+                    System.out.println(j.get("conditions").toString());
+                }
                 JSONObject main = (JSONObject)jsonObj.get("current_observation");
 
                 JSONObject display_location = (JSONObject)main.get("display_location");
@@ -104,7 +114,7 @@ public class HomeActivity extends AppCompatActivity {
                     public void run() {
 
                         wAdapter.notifyDataSetChanged();
-                        
+
                     }
                 };
 
