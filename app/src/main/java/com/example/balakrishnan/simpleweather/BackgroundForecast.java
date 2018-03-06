@@ -15,7 +15,7 @@ import static com.example.balakrishnan.simpleweather.Main2Activity.PlaceholderFr
  * Created by balakrishnan on 6/3/18.
  */
 
-public static class BackgroundForecast extends AsyncTask<Double, Void, Void> {
+public class BackgroundForecast extends AsyncTask<Double, Void, Void> {
 
     Double currentLatitude, currentLongitude;
     Activity act;
