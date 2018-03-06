@@ -98,26 +98,13 @@ public class HomeActivity extends AppCompatActivity {
                 wList.add(w);
                 wList.add(w);
                 wList.add(w);
+
                 Runnable r = new Runnable() {
                     @Override
                     public void run() {
 
                         wAdapter.notifyDataSetChanged();
-
-                        /*final ImageView imageView=(ImageView)findViewById(R.id.imageView);
-                        System.out.println(imgURL);
-
-                        Picasso.with(getApplicationContext()).load(imgURL).into(imageView,new com.squareup.picasso.Callback() {
-                            @Override
-                            public void onSuccess() {
-                                imageView.setVisibility(View.VISIBLE);
-                            }
-
-                            @Override
-                            public void onError() {
-
-                            }
-                        });*/
+                        
                     }
                 };
 
