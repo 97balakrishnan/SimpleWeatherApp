@@ -5,39 +5,15 @@ package com.example.balakrishnan.simpleweather;
  */
 
 public class WeatherInfo {
-    private String temperature,humidity,lattitude,longitude;
-    private String description,location,imgURL;
+    private String title,description;
+    private String imgURL;
 
-    public String getTemperature() {
-        return temperature;
+    public String getTitle() {
+        return title;
     }
 
-    public void setTemperature(String temperature) {
-        this.temperature = temperature;
-    }
-
-    public String getHumidity() {
-        return humidity;
-    }
-
-    public void setHumidity(String humidity) {
-        this.humidity = humidity;
-    }
-
-    public String getLattitude() {
-        return lattitude;
-    }
-
-    public void setLattitude(String lattitude) {
-        this.lattitude = lattitude;
-    }
-
-    public String getLongitude() {
-        return longitude;
-    }
-
-    public void setLongitude(String longitude) {
-        this.longitude = longitude;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getDescription() {
@@ -46,14 +22,6 @@ public class WeatherInfo {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public String getLocation() {
-        return location;
-    }
-
-    public void setLocation(String location) {
-        this.location = location;
     }
 
     public String getImgURL() {

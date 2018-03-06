@@ -1,9 +1,17 @@
 package com.example.balakrishnan.simpleweather;
 
+import android.Manifest;
+import android.app.Activity;
+import android.content.pm.PackageManager;
+import android.os.AsyncTask;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 
 import android.support.v4.app.Fragment;
@@ -18,6 +26,16 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import android.widget.TextView;
+import android.widget.Toast;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static com.example.balakrishnan.simpleweather.Main2Activity.PlaceholderFragment.wAdapter;
+import static com.example.balakrishnan.simpleweather.Main2Activity.PlaceholderFragment.wList;
 
 public class Main2Activity extends AppCompatActivity {
 
@@ -57,13 +75,8 @@ public class Main2Activity extends AppCompatActivity {
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+        fab.hide();
+
 
     }
 
@@ -101,6 +114,8 @@ public class Main2Activity extends AppCompatActivity {
         private static final String ARG_SECTION_NUMBER = "section_number";
 
         public PlaceholderFragment() {
+
+
         }
 
         /**
@@ -114,21 +129,103 @@ public class Main2Activity extends AppCompatActivity {
             fragment.setArguments(args);
             return fragment;
         }
+        public void checkPermissions(View v)
+        {
+            if (ActivityCompat.checkSelfPermission(v.getContext(),
+                    Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                // Check Permissions Now
+                ActivityCompat.requestPermissions(getActivity(),
+                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                        0);
+            }
+
+        }
+        Double currentLongitude=0.0,currentLatitude=0.0;
+        public void UpdateLatLong(View v)
+        {
+
+        }
+        public void Tab1Function(View v,View v2)
+        {
+            checkPermissions(v);
+            if (ActivityCompat.checkSelfPermission(v.getContext(),
+                    Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                GPSTracker gps = new GPSTracker(v.getContext());
+                System.out.println(String.valueOf(gps.getLastLocation().getLatitude()));
+                System.out.println(String.valueOf(gps.getLastLocation().getLongitude()));
+                currentLongitude = gps.getLastLocation().getLongitude();
+                currentLatitude = gps.getLastLocation().getLatitude();
+            }
+
+             if(currentLatitude!=0 && currentLongitude!=0) {
+                 BackgroundJSONCall b = new BackgroundJSONCall(v, getActivity());
+                 b.execute(currentLatitude, currentLongitude);
+             }
+            else
+            {
+                Toast.makeText(getContext(),"Couldnt get location",Toast.LENGTH_LONG).show();
+            }
+            Tab2Function(v2);
+        }
+        private RecyclerView recyclerView;
+        public static WeatherAdapter wAdapter;
+        public static List<WeatherInfo> wList = new ArrayList<>();
+
+        public void Tab2Function(View v)
+        {
+            try {
+                if (ActivityCompat.checkSelfPermission(v.getContext(),
+                        Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                    UpdateLatLong(v);
+                    System.out.println("tab2");
+                    recyclerView = v.findViewById(R.id.recycler_view);
+                    wAdapter = new WeatherAdapter(wList, v.getContext());
+                    RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(v.getContext());
+                    if(recyclerView==null)
+                        System.out.println("recyclerview is null");
+                    recyclerView.setLayoutManager(mLayoutManager);
+                    recyclerView.setItemAnimator(new DefaultItemAnimator());
+                    recyclerView.setAdapter(wAdapter);
+                    WeatherInfo w = new WeatherInfo();
+                    w.setDescription("sample desc.....");
+                    w.setTitle("sample title");
+                    w.setImgURL("http://sample.url.com");
+                    wList.add(w);
+                    wAdapter.notifyDataSetChanged();
+                    BackgroundForecast bf = new BackgroundForecast(getActivity());
+                    bf.execute(currentLatitude, currentLongitude);
+                    System.out.println("wlist="+wList.toString());
+
+                }
+            }
+            catch(Exception e)
+            {
+                e.printStackTrace();
+            }
+        }
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_main2, container, false);
-            TextView textView = (TextView) rootView.findViewById(R.id.section_label);
-            textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
+            View rootView=null;
+            if(getArguments().getInt(ARG_SECTION_NUMBER)==1)
+            {rootView = inflater.inflate(R.layout.activity_main, container, false);
+                View rootView1 = inflater.inflate(R.layout.activity_home, container, false);
+
+                Tab1Function(rootView,rootView1);
+            }
+            else if(getArguments().getInt(ARG_SECTION_NUMBER)==2) {
+                rootView = inflater.inflate(R.layout.activity_home, container, false);
+                //Tab2Function(rootView);
+            }
             return rootView;
         }
-    }
 
-    /**
-     * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
-     * one of the sections/tabs/pages.
-     */
+
+
+
+        }
+
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
         public SectionsPagerAdapter(FragmentManager fm) {
@@ -137,15 +234,18 @@ public class Main2Activity extends AppCompatActivity {
 
         @Override
         public Fragment getItem(int position) {
-            // getItem is called to instantiate the fragment for the given page.
-            // Return a PlaceholderFragment (defined as a static inner class below).
             return PlaceholderFragment.newInstance(position + 1);
         }
 
         @Override
         public int getCount() {
             // Show 3 total pages.
-            return 3;
+            return 2;
         }
     }
+
+
+
+
+
 }
