@@ -11,7 +11,13 @@ This app provides the following details:
 - Weather description
 - Weather icon
 
-Documentation for WunderGround api [Link](https://www.wunderground.com/weather/api/d/docs)
+## Documentation for WunderGround api [Link](https://www.wunderground.com/weather/api/d/docs)
+
+<br>
+<br>
+
+# Screenshots
+
 <br>
 <img src="https://github.com/97balakrishnan/SimpleWeatherApp/blob/master/ScreenShots/ss2.jpg" alt="alt" height="500x" >
 <br>
