@@ -4,6 +4,6 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
             <solid
-                android:color="#fff"/>
+                android:color="@color/transparent_white_percent_50"/>
 
         </shape>

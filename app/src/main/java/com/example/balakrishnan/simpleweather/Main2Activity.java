@@ -27,9 +27,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -167,6 +171,24 @@ public class Main2Activity extends AppCompatActivity {
             }
 
              if(currentLatitude!=0 && currentLongitude!=0) {
+                 final RelativeLayout rl = (RelativeLayout)v.findViewById(R.id.relLayout);
+                 final RelativeLayout rl1 = (RelativeLayout)v2.findViewById(R.id.relLayout1);
+
+                 final ImageView img =(ImageView)v.findViewById(R.id.backgroundImage);
+                 Picasso.with(v.getContext())
+                         .load("https://source.unsplash.com/collection/319663").fit().centerCrop().into(img, new Callback() {
+                     @Override
+                     public void onSuccess() {
+                         rl.setBackgroundDrawable(img.getDrawable());
+                        rl1.setBackgroundDrawable(img.getDrawable());
+                     }
+
+                     @Override
+                     public void onError() {
+                         Toast.makeText(getContext(), "No Internet Connection", Toast.LENGTH_LONG).show();
+                     }
+                 });
+
                  BackgroundJSONCall b = new BackgroundJSONCall(v, getActivity());
                  b.execute(currentLatitude, currentLongitude);
              }
