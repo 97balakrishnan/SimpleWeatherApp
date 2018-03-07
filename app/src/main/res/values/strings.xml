@@ -4,5 +4,6 @@
     <string name="tab_text_1">Now</string>
     <string name="tab_text_2">Forecast</string>
     <string name="action_settings">About</string>
+    <string name="weatherTitle"><u>WeatherTitle</u></string>
     <string name="section_format">Hello World from section: %1$d</string>
 </resources>
