@@ -180,18 +180,12 @@ public class Main2Activity extends AppCompatActivity {
                     System.out.println("tab2");
                     recyclerView = v.findViewById(R.id.recycler_view);
                     wAdapter = new WeatherAdapter(wList, v.getContext());
-                    RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(v.getContext());
+                    LinearLayoutManager layoutManager = new LinearLayoutManager(v.getContext(),LinearLayoutManager.VERTICAL,false);
                     if(recyclerView==null)
                         System.out.println("recyclerview is null");
-                    recyclerView.setLayoutManager(mLayoutManager);
+                    recyclerView.setLayoutManager(layoutManager);
                     recyclerView.setItemAnimator(new DefaultItemAnimator());
                     recyclerView.setAdapter(wAdapter);
-                    WeatherInfo w = new WeatherInfo();
-                    w.setDescription("sample desc.....");
-                    w.setTitle("sample title");
-                    w.setImgURL("http://sample.url.com");
-                    wList.add(w);
-                    wAdapter.notifyDataSetChanged();
                     BackgroundForecast bf = new BackgroundForecast(getActivity());
                     bf.execute(currentLatitude, currentLongitude);
                     System.out.println("wlist="+wList.toString());
@@ -216,7 +210,7 @@ public class Main2Activity extends AppCompatActivity {
             }
             else if(getArguments().getInt(ARG_SECTION_NUMBER)==2) {
                 rootView = inflater.inflate(R.layout.activity_home, container, false);
-                //Tab2Function(rootView);
+                Tab2Function(rootView);
             }
             return rootView;
         }

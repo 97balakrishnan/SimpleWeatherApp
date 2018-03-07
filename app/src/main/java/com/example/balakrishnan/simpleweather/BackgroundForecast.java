@@ -29,6 +29,7 @@ public class BackgroundForecast extends AsyncTask<Double, Void, Void> {
         act.runOnUiThread(new Runnable() {
             @Override
             public void run() {
+
                 wAdapter.notifyDataSetChanged();
             }
         });
