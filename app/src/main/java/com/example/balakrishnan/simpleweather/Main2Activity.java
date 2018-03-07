@@ -174,6 +174,7 @@ public class Main2Activity extends AppCompatActivity {
         public void Tab2Function(View v)
         {
             try {
+
                 if (ActivityCompat.checkSelfPermission(v.getContext(),
                         Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                     UpdateLatLong(v);

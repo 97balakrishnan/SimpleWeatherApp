@@ -2,8 +2,8 @@
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#fff"
+        android:layout_height="match_parent"
+        android:background="#000"
         android:clickable="true"
         android:focusable="true"
         android:orientation="vertical"
@@ -16,14 +16,22 @@
         android:paddingRight="@dimen/activity_horizontal_margin"
         android:paddingTop="@dimen/row_padding_vertical"
         >
+    <RelativeLayout
+        android:layout_below="@id/imagesContainer"
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:background="#000"
+        android:padding="20dp">
+
     <TextView
         android:id="@+id/tempView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="30dp"
-        android:textColor="#000"
+        android:textColor="#fff"
         android:text="NA"
         />
 
@@ -31,8 +39,8 @@
         android:id="@+id/humView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="#000"
-        android:layout_marginTop="60dp"
+        android:textColor="#fff"
+        android:layout_marginTop="30dp"
         android:layout_centerHorizontal="true"
 
         android:text="NA" />
@@ -41,21 +49,12 @@
         android:id="@+id/locnView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="#000"
+        android:textColor="#fff"
         android:layout_centerHorizontal="true"
 
-        android:layout_marginTop="90dp"
+        android:layout_marginTop="60dp"
         android:text="NA" />
 
-    <TextView
-        android:id="@+id/descView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="#000"
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginTop="90dp"
-        android:text="-" />
 
 
 
@@ -63,82 +62,62 @@
         android:id="@+id/latView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="120dp"
+        android:layout_marginTop="90dp"
         android:layout_centerHorizontal="true"
-        android:textColor="#000"
+        android:textColor="#fff"
         android:text="NA" />
 
     <TextView
         android:id="@+id/longView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="#000"
+        android:textColor="#fff"
         android:layout_alignEnd="@id/latView"
-        android:layout_marginTop="150dp"
+        android:layout_marginTop="120dp"
         android:text="NA" />
 
-    <TextView
-        android:id="@+id/textView8"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="120dp"
-        android:layout_marginLeft="10dp"
-        android:text="Latitude" />
+        </RelativeLayout>
 
-    <TextView
-        android:id="@+id/textView9"
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:id="@+id/imagesContainer"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="150dp"
-        android:layout_marginLeft="10dp"
-        android:text="Longitude" />
-
-    <TextView
-        android:id="@+id/textView10"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:layout_marginLeft="10dp"
-         android:text="Temperature" />
-
-    <TextView
-        android:id="@+id/textView11"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="60dp"
-        android:layout_marginLeft="10dp"
-        android:text="Humidity" />
-
-    <TextView
-        android:id="@+id/textView12"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="90dp"
-        android:layout_marginLeft="10dp"
-        android:text="Location" />
+        android:layout_centerHorizontal="true">
 
 
     <pl.droidsonroids.gif.GifImageView
 
         android:id="@+id/gifImageView"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginTop="27dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
         android:src="@drawable/materialloader"
         android:scaleType="centerCrop"
+        android:translationZ="10dp"
         />
     <ImageView
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:padding="15dp"
+        android:background="@drawable/shape"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:id="@+id/imageView"
         android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-
-        android:layout_marginTop="27dp"
-        android:visibility="invisible"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="18dp"
+        />
+        <TextView
+            android:id="@+id/descView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#fff"
+            android:textSize="25dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="100dp"
+            android:text="Loading"
         />
 
+    </RelativeLayout>
 
 </RelativeLayout>

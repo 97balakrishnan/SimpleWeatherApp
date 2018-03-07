@@ -82,10 +82,10 @@ public class BackgroundJSONCall extends AsyncTask<Double, Void, Void> {
                     public void run() {
                         tempView.setText(temp);
                         descView.setText(weatherDesc);
-                        humView.setText(hum);
+                        humView.setText(hum+" humid");
                         locnView.setText(locn);
-                        latView.setText(String.valueOf(currentLatitude));
-                        longView.setText(String.valueOf(currentLongitude));
+                        latView.setText(String.valueOf(currentLatitude).substring(0,5)+" (lat)");
+                        longView.setText(String.valueOf(currentLongitude).substring(0,5)+" (lon)");
 
 
                         Picasso.with(act.getApplicationContext()).load(imgURL).into(imageView,new com.squareup.picasso.Callback() {
@@ -148,7 +148,13 @@ public class BackgroundJSONCall extends AsyncTask<Double, Void, Void> {
     @Override
     protected void onPostExecute(Void aVoid) {
         super.onPostExecute(aVoid);
-        act.runOnUiThread(r);
+        try {
+            act.runOnUiThread(r);
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
     }
 
 }
