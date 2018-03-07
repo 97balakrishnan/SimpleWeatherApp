@@ -171,8 +171,8 @@ public class Main2Activity extends AppCompatActivity {
             }
 
              if(currentLatitude!=0 && currentLongitude!=0) {
-                 final RelativeLayout rl = (RelativeLayout)v.findViewById(R.id.relLayout);
-                 final RelativeLayout rl1 = (RelativeLayout)v2.findViewById(R.id.relLayout1);
+                /* final RelativeLayout rl = (RelativeLayout)v.findViewById(R.id.relLayout);
+                // final RecyclerView rl1 = (RecyclerView) v2.findViewById(R.id.recycler_view);
 
                  final ImageView img =(ImageView)v.findViewById(R.id.backgroundImage);
                  Picasso.with(v.getContext())
@@ -180,7 +180,7 @@ public class Main2Activity extends AppCompatActivity {
                      @Override
                      public void onSuccess() {
                          rl.setBackgroundDrawable(img.getDrawable());
-                        rl1.setBackgroundDrawable(img.getDrawable());
+                  //      rl1.setBackgroundDrawable(img.getDrawable());
                      }
 
                      @Override
@@ -188,7 +188,7 @@ public class Main2Activity extends AppCompatActivity {
                          Toast.makeText(getContext(), "No Internet Connection", Toast.LENGTH_LONG).show();
                      }
                  });
-
+*/
                  BackgroundJSONCall b = new BackgroundJSONCall(v, getActivity());
                  b.execute(currentLatitude, currentLongitude);
              }

@@ -14,6 +14,7 @@
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin"
         android:paddingTop="@dimen/row_padding_vertical"
+        android:background="#000"
         android:id="@+id/relLayout"
         >
     <ImageView
@@ -33,7 +34,7 @@
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
         android:layout_marginTop="30dp"
-        android:background="@color/transparent_white_percent_40"
+        android:background="#fff"
         android:paddingBottom="20dp"
         android:paddingTop="10dp">
 
