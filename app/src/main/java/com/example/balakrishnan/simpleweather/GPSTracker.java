@@ -102,6 +102,10 @@ public class GPSTracker extends Service implements LocationListener {
         {
             s.printStackTrace();
         }
+        catch(Exception e)
+        {
+            System.out.println(e);
+        }
         if (bestLocation == null) {
             return null;
         }
