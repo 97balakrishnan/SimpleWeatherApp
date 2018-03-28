@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
+import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -21,6 +22,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.text.Layout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -32,6 +34,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
+import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
@@ -60,6 +66,15 @@ public class Main2Activity extends AppCompatActivity {
      * The {@link ViewPager} that will host the section contents.
      */
     private ViewPager mViewPager;
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if(requestCode==PackageManager.PERMISSION_DENIED)
+            {
+                Toast.makeText(getApplicationContext(),"Permission denied",Toast.LENGTH_SHORT).show();
+            }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -160,6 +175,7 @@ public class Main2Activity extends AppCompatActivity {
         }
         public void Tab1Function(View v,View v2)
         {
+            final View view =v;
             checkPermissions(v);
             if (ActivityCompat.checkSelfPermission(v.getContext(),
                     Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
@@ -168,9 +184,9 @@ public class Main2Activity extends AppCompatActivity {
                 System.out.println(String.valueOf(gps.getLastLocation().getLongitude()));
                 currentLongitude = gps.getLastLocation().getLongitude();
                 currentLatitude = gps.getLastLocation().getLatitude();
-            }
 
-             if(currentLatitude!=0 && currentLongitude!=0) {
+
+                if (currentLatitude != 0 && currentLongitude != 0) {
                 /* final RelativeLayout rl = (RelativeLayout)v.findViewById(R.id.relLayout);
                 // final RecyclerView rl1 = (RecyclerView) v2.findViewById(R.id.recycler_view);
 
@@ -189,14 +205,41 @@ public class Main2Activity extends AppCompatActivity {
                      }
                  });
 */
-                 BackgroundJSONCall b = new BackgroundJSONCall(v, getActivity());
-                 b.execute(currentLatitude, currentLongitude);
-             }
-            else
-            {
-                Toast.makeText(getContext(),"Couldnt get location",Toast.LENGTH_LONG).show();
+                    BackgroundJSONCall b = new BackgroundJSONCall(v, getActivity());
+                    b.execute(currentLatitude, currentLongitude);
+                }
+
+                PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)getActivity().getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
+
+               autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+                    @Override
+                    public void onPlaceSelected(Place place) {
+                        // TODO: Get info about the selected place.
+                        //Log.i(TAG, "Place: " + place.getName());
+
+                        String placeDetailsStr = place.getName() + "\n"
+                                + place.getId() + "\n"
+                                + place.getLatLng().toString() + "\n"
+                                + place.getAddress() + "\n"
+                                + place.getAttributions();
+                        System.out.println(placeDetailsStr);
+                        BackgroundJSONCall b = new BackgroundJSONCall(view, getActivity());
+                        b.AssignCity(place.getName().toString());
+                        b.execute(currentLatitude, currentLongitude);
+                        wList.clear();
+                        wAdapter.notifyDataSetChanged();
+                        BackgroundForecast bf = new BackgroundForecast(getActivity(),place.getName().toString());
+                        bf.execute(currentLatitude, currentLongitude);
+                    }
+
+                    @Override
+                    public void onError(Status status) {
+                        // TODO: Handle the error.
+                       // Log.i(TAG, "An error occurred: " + status);
+                    }
+                });
+                Tab2Function(v2);
             }
-            Tab2Function(v2);
         }
         private RecyclerView recyclerView;
         public static WeatherAdapter wAdapter;
@@ -218,7 +261,7 @@ public class Main2Activity extends AppCompatActivity {
                     recyclerView.setLayoutManager(layoutManager);
                     recyclerView.setItemAnimator(new DefaultItemAnimator());
                     recyclerView.setAdapter(wAdapter);
-                    BackgroundForecast bf = new BackgroundForecast(getActivity());
+                    BackgroundForecast bf = new BackgroundForecast(getActivity(),null);
                     bf.execute(currentLatitude, currentLongitude);
                     System.out.println("wlist="+wList.toString());
 

@@ -15,6 +15,9 @@
         android:configChanges="orientation"
         android:screenOrientation="portrait"
         android:theme="@style/AppTheme">
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyB2UH-p8zglCBgODGU0pri_SW_6TOp3ccM"/>
 
         <activity
             android:name=".Main2Activity"

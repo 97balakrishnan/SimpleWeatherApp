@@ -22,19 +22,27 @@ public class BackgroundJSONCall extends AsyncTask<Double, Void, Void> {
     private Double currentLatitude, currentLongitude;
     private View v;
     private Activity act;
-
+    private String city;
+    private boolean isCitySearch=false;
+    BackgroundJSONCall(){}
     BackgroundJSONCall(View v, Activity act) {
         this.v = v;
         this.act=act;
+        isCitySearch=false;
+    }
+    public void AssignCity(String city){
+        isCitySearch=true;
+        this.city=city;
     }
 
 
     @Override
     protected Void doInBackground(Double... arg0) {
 
-        currentLatitude = arg0[0];
-        currentLongitude = arg0[1];
-        jsonfn();
+
+            currentLatitude = arg0[0];
+            currentLongitude = arg0[1];
+            jsonfn();
 
         return null;
     }
@@ -44,8 +52,15 @@ public class BackgroundJSONCall extends AsyncTask<Double, Void, Void> {
     private void jsonfn() {
 
         HttpHandler sh = new HttpHandler();
-        System.out.println("\n" + currentLatitude + "\n" + currentLongitude);
-        String url = "http://api.wunderground.com/api/8a655346344b1471/conditions/q/" + currentLatitude + "," + currentLongitude + ".json";
+        String url="";
+        if(!isCitySearch) {
+            System.out.println("\n" + currentLatitude + "\n" + currentLongitude);
+            url = "http://api.wunderground.com/api/8a655346344b1471/conditions/q/" + currentLatitude + "," + currentLongitude + ".json";
+        }
+        else
+        {
+            url = "http://api.wunderground.com/api/8a655346344b1471/conditions/q/"+city+".json";
+        }
         System.out.println(url);
         String jsonStr = sh.makeServiceCall(url);
         String fURL = url.replace("conditions", "forecast");

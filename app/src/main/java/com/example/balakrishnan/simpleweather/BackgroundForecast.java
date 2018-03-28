@@ -19,9 +19,10 @@ public class BackgroundForecast extends AsyncTask<Double, Void, Void> {
 
     Double currentLatitude, currentLongitude;
     Activity act;
-    BackgroundForecast(Activity act)
+    String city;
+    BackgroundForecast(Activity act,String city)
     {
-        this.act=act;
+        this.act=act;this.city=city;
     }
     @Override
     protected void onPostExecute(Void aVoid) {
@@ -53,7 +54,11 @@ public class BackgroundForecast extends AsyncTask<Double, Void, Void> {
     public void fn() {
         HttpHandler sh = new HttpHandler();
         System.out.println("\n" + currentLatitude + "\n" + currentLongitude);
-        String url = "http://api.wunderground.com/api/8a655346344b1471/forecast/q/" + currentLatitude + "," + currentLongitude + ".json";
+        String url="";
+        if(city==null)
+            url = "http://api.wunderground.com/api/8a655346344b1471/forecast/q/" + currentLatitude + "," + currentLongitude + ".json";
+        else
+            url = "http://api.wunderground.com/api/8a655346344b1471/forecast/q/"+city+".json";
         System.out.println(url);
         String jsonStr = sh.makeServiceCall(url);
 
