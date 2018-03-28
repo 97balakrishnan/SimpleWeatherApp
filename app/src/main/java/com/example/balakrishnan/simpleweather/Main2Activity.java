@@ -35,6 +35,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.places.AutocompleteFilter;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
 import com.google.android.gms.location.places.ui.PlaceSelectionListener;
@@ -210,13 +211,13 @@ public class Main2Activity extends AppCompatActivity {
                 }
 
                 PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)getActivity().getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
-
-               autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+                AutocompleteFilter autocompleteFilter = new AutocompleteFilter.Builder().setTypeFilter(AutocompleteFilter.TYPE_FILTER_CITIES).build();
+                autocompleteFragment.setFilter(autocompleteFilter);
+                autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
                     @Override
                     public void onPlaceSelected(Place place) {
                         // TODO: Get info about the selected place.
                         //Log.i(TAG, "Place: " + place.getName());
-
                         String placeDetailsStr = place.getName() + "\n"
                                 + place.getId() + "\n"
                                 + place.getLatLng().toString() + "\n"
