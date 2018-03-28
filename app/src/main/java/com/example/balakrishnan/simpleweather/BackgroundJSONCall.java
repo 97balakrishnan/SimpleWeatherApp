@@ -97,7 +97,7 @@ public class BackgroundJSONCall extends AsyncTask<Double, Void, Void> {
                     public void run() {
                         tempView.setText(temp);
                         descView.setText(weatherDesc);
-                        humView.setText(hum+" humid");
+                        humView.setText(hum+" Humid");
                         locnView.setText(locn);
                         latView.setText(String.valueOf(currentLatitude).substring(0,5)+" (lat)");
                         longView.setText(String.valueOf(currentLongitude).substring(0,5)+" (lon)");

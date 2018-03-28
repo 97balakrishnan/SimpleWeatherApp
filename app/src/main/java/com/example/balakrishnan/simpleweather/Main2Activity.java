@@ -2,6 +2,7 @@ package com.example.balakrishnan.simpleweather;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
@@ -68,14 +69,7 @@ public class Main2Activity extends AppCompatActivity {
      */
     private ViewPager mViewPager;
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if(requestCode==PackageManager.PERMISSION_DENIED)
-            {
-                Toast.makeText(getApplicationContext(),"Permission denied",Toast.LENGTH_SHORT).show();
-            }
-    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -158,14 +152,19 @@ public class Main2Activity extends AppCompatActivity {
             fragment.setArguments(args);
             return fragment;
         }
-        public void checkPermissions(View v)
+        public void checkPermissions()
         {
-            if (ActivityCompat.checkSelfPermission(v.getContext(),
+            if (ActivityCompat.checkSelfPermission(rootView.getContext(),
                     Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 // Check Permissions Now
                 ActivityCompat.requestPermissions(getActivity(),
                         new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                         0);
+
+            }
+            else
+            {
+                Tab1Function();
             }
 
         }
@@ -174,13 +173,18 @@ public class Main2Activity extends AppCompatActivity {
         {
 
         }
-        public void Tab1Function(View v,View v2)
+        public void Tab1Function()
         {
-            final View view =v;
-            checkPermissions(v);
-            if (ActivityCompat.checkSelfPermission(v.getContext(),
+            final View view =rootView;
+
+            if (ActivityCompat.checkSelfPermission(rootView.getContext(),
                     Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                GPSTracker gps = new GPSTracker(v.getContext());
+                GPSTracker gps = new GPSTracker(rootView.getContext());
+                if(gps.getLastLocation()==null)
+                {
+                    Toast.makeText(getActivity().getApplicationContext(),"Location unavailable",Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 System.out.println(String.valueOf(gps.getLastLocation().getLatitude()));
                 System.out.println(String.valueOf(gps.getLastLocation().getLongitude()));
                 currentLongitude = gps.getLastLocation().getLongitude();
@@ -206,7 +210,7 @@ public class Main2Activity extends AppCompatActivity {
                      }
                  });
 */
-                    BackgroundJSONCall b = new BackgroundJSONCall(v, getActivity());
+                    BackgroundJSONCall b = new BackgroundJSONCall(rootView, getActivity());
                     b.execute(currentLatitude, currentLongitude);
                 }
 
@@ -239,7 +243,7 @@ public class Main2Activity extends AppCompatActivity {
                        // Log.i(TAG, "An error occurred: " + status);
                     }
                 });
-                Tab2Function(v2);
+                Tab2Function(rootView1);
             }
         }
         private RecyclerView recyclerView;
@@ -273,16 +277,16 @@ public class Main2Activity extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
-
+        View rootView=null,rootView1=null;
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
-            View rootView=null;
+
             if(getArguments().getInt(ARG_SECTION_NUMBER)==1)
             {rootView = inflater.inflate(R.layout.activity_main, container, false);
-                View rootView1 = inflater.inflate(R.layout.activity_home, container, false);
-
-                Tab1Function(rootView,rootView1);
+                rootView1 = inflater.inflate(R.layout.activity_home, container, false);
+                checkPermissions();
+                //Tab1Function(rootView,rootView1);
             }
             else if(getArguments().getInt(ARG_SECTION_NUMBER)==2) {
                 rootView = inflater.inflate(R.layout.activity_home, container, false);
@@ -312,10 +316,24 @@ public class Main2Activity extends AppCompatActivity {
             // Show 3 total pages.
             return 2;
         }
+
+
     }
 
 
 
-
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if(requestCode==PackageManager.PERMISSION_DENIED)
+        {
+            Toast.makeText(getApplicationContext(),"Permission denied",Toast.LENGTH_SHORT).show();
+        }
+        else
+        {
+            startActivity(new Intent(this,this.getClass()));
+            //Toast.makeText(getApplicationContext(),"Please restart the app",Toast.LENGTH_SHORT).show();
+        }
+    }
 
 }
