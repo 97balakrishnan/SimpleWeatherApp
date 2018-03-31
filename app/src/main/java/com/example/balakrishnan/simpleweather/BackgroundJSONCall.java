@@ -5,6 +5,7 @@ import android.os.AsyncTask;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
@@ -69,10 +70,10 @@ public class BackgroundJSONCall extends AsyncTask<Double, Void, Void> {
         if (jsonStr != null) {
             try {
                 JSONObject jsonObj = new JSONObject(jsonStr);
-                JSONObject fJSONObject = new JSONObject(fJSONStr);
-                JSONObject forecast = (JSONObject) fJSONObject.get("forecast");
-                JSONObject SimpleForecast = (JSONObject) forecast.get("simpleforecast");
-                JSONArray ForecastDay = (JSONArray) SimpleForecast.get("forecastday");
+ //               JSONObject fJSONObject = new JSONObject(fJSONStr);
+//                JSONObject forecast = (JSONObject) fJSONObject.get("forecast");
+//                JSONObject SimpleForecast = (JSONObject) forecast.get("simpleforecast");
+ //               JSONArray ForecastDay = (JSONArray) SimpleForecast.get("forecastday");
 
                 JSONObject main = (JSONObject) jsonObj.get("current_observation");
 
@@ -119,57 +120,40 @@ public class BackgroundJSONCall extends AsyncTask<Double, Void, Void> {
                     }
                 };
 
-                /*WeatherInfo w = new WeatherInfo();
-                w.setTemperature(temp);
-                w.setHumidity(hum);
-                w.setDescription(weatherDesc);
-                w.setImgURL(imgURL);
-                w.setLocation(locn);
-                w.setLattitude(String.valueOf(currentLatitude));
-                w.setLongitude(String.valueOf(currentLongitude));
-                wList.add(w);
-                for(int i=0;i<ForecastDay.length();i++)
-                {
-                    JSONObject j = (JSONObject)ForecastDay.get(i);
-                    JSONObject high =(JSONObject)j.get("high");
-                    WeatherInfo w1=new WeatherInfo();
-                    w1.setTemperature(high.get("celsius").toString());
-                    w1.setImgURL(j.get("icon_url").toString());
-                    w1.setHumidity(j.get("avehumidity").toString());
-                    w1.setLocation(locn);
-                    w1.setLattitude(String.valueOf(currentLatitude));
-                    w1.setLongitude(String.valueOf(currentLongitude));
-                    w1.setDescription(weatherDesc);
-                    wList.add(w1);
-                }
-                Runnable r = new Runnable() {
-                    @Override
-                    public void run() {
 
-                        wAdapter.notifyDataSetChanged();
-
-                    }
-                };
-
-                runOnUiThread(r);*/
 
             } catch (Exception e) {
 
+                if(act!=null)
+                    act.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(act.getApplicationContext(),"No weather data available",Toast.LENGTH_LONG).show();
+                        }
+                    });
                 e.printStackTrace();
             }
+        }
+        else
+        {
+            System.out.println("Couldnt get json response");
         }
 
     }
     @Override
     protected void onPostExecute(Void aVoid) {
-        super.onPostExecute(aVoid);
+
         try {
-            act.runOnUiThread(r);
+            if(r!=null)
+                act.runOnUiThread(r);
         }
         catch(Exception e)
         {
             e.printStackTrace();
         }
+
+        super.onPostExecute(aVoid);
+
     }
 
 }

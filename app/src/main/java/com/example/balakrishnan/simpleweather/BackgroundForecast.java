@@ -3,6 +3,7 @@ package com.example.balakrishnan.simpleweather;
 import android.app.Activity;
 import android.os.AsyncTask;
 import android.view.View;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -62,7 +63,7 @@ public class BackgroundForecast extends AsyncTask<Double, Void, Void> {
         System.out.println(url);
         String jsonStr = sh.makeServiceCall(url);
 
-        if (jsonStr != null) {
+        if (jsonStr != null && ((currentLatitude!=0&&currentLongitude!=0)||city!=null)) {
             try {
                 JSONObject jsonObj = new JSONObject(jsonStr);
                 JSONObject forecast = (JSONObject) jsonObj.get("forecast");
@@ -85,6 +86,13 @@ public class BackgroundForecast extends AsyncTask<Double, Void, Void> {
                 }
 
             } catch (Exception e) {
+                if(act!=null)
+                    act.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(act.getApplicationContext(),"No weather data available",Toast.LENGTH_LONG).show();
+                        }
+                    });
                 e.printStackTrace();
             }
         }

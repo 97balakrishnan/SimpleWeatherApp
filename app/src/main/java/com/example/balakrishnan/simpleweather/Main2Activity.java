@@ -116,7 +116,7 @@ public class Main2Activity extends AppCompatActivity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             Snackbar snackbar = Snackbar
-                    .make(findViewById(R.id.main_content), "SimpleWeather app made by S Balakrishnan", Snackbar.LENGTH_LONG);
+                    .make(findViewById(R.id.main_content), "SimpleWeather app made for MAD Lab project", Snackbar.LENGTH_LONG);
             View sView=snackbar.getView();
             sView.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorPrimaryDark));
             snackbar.show();
@@ -229,11 +229,17 @@ public class Main2Activity extends AppCompatActivity {
                                 + place.getAttributions();
                         System.out.println(placeDetailsStr);
                         BackgroundJSONCall b = new BackgroundJSONCall(view, getActivity());
-                        b.AssignCity(place.getName().toString());
+                        String[] cityCountry = place.getAddress().toString().split(",");
+                        String city=cityCountry[0].trim().replace(" ","_");
+                        String country="";
+                        country=cityCountry[1].trim().replace(" ","_");
+
+                        //    country=cityCountry[1].trim().replace(" ","_");
+                        b.AssignCity(country+"/"+city);
                         b.execute(currentLatitude, currentLongitude);
                         wList.clear();
                         wAdapter.notifyDataSetChanged();
-                        BackgroundForecast bf = new BackgroundForecast(getActivity(),place.getName().toString());
+                        BackgroundForecast bf = new BackgroundForecast(getActivity(),country+"/"+city);
                         bf.execute(currentLatitude, currentLongitude);
                     }
 
